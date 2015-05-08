@@ -1,0 +1,16 @@
+<ion-view view-title="{{show.title}}">
+  <ion-content class="">
+    <img ng-src="{{show.images.banner}}">
+
+    <div class="card">
+      <div class="item item-text-wrap">
+        <h2>Episodes:</h2>
+        <ion-list>
+          <ion-item ng-repeat="episode in show.episodes| orderBy:['-season','-episode']" type="item-text-wrap" href="#/tab/shows/{{show._id}}/{{$index}}">
+            {{episode.season}}x{{episode.episode}} - {{episode.title}}
+          </ion-item>
+        </ion-list>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

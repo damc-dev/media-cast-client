@@ -1,0 +1,12 @@
+<ion-view view-title="Shows">
+  <ion-content>
+    <ion-list>
+      <ion-item class="" ng-repeat="show in shows" type="item-text-wrap" href="#/tab/shows/{{show._id}}">
+        <img ng-src="{{show.images.banner}}" width="100%">
+        <ion-reorder-button class="ion-navicon"
+                    on-reorder="reorderItem(item, $fromIndex, $toIndex)">
+</ion-reorder-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
