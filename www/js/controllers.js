@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['media.services'])
+angular.module('starter.controllers', ['media.services', 'utils.storage'])
 
 .controller('DashCtrl', function($scope) {})
 
@@ -19,11 +19,19 @@ angular.module('starter.controllers', ['media.services'])
   };
 })
 
-.controller('HomeCtrl', function($scope) {})
+.controller('HomeCtrl', function($scope, $localstorage) {
+  $localstorage.setArray
 
-.controller('ShowsCtrl', function($scope, ShowsResource) {
-  $scope.shouldShowReorder = true;
-  $scope.shows = ShowsResource.query({page: 1});
+})
+
+.controller('ShowsCtrl', function($scope, ShowsResource, $localstorage) {
+  $scope.shows = $localstorage.getArray('cachedShows');
+  $scope.page = 1;
+  ShowsResource.query({page: $scope.page}, function(showsPage) {
+    $scope.shows = $scope.shows.concat(showsPage);
+    $localstorage.setShows = $localstorage.setArray('cachedShows', $scope.shows);
+
+  });
 })
 .controller('ShowDetailCtrl', function($scope, $stateParams, ShowDetails) {
   console.log($stateParams);
