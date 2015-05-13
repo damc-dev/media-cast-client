@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'media.services', 'utils.storage', 'ngResource'])
+angular.module('starter', ['ionic', 'starter.controllers', 'playback.controller', 'starter.services', 'media.services', 'utils.storage', 'ngResource', 'socket.services'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -105,7 +105,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     }
   })
   .state('tab.media-ctrl', {
-    url: '/shows/{showId}/{episodeIndex}',
+    url: '/shows/{showId}/{season}/{episode}',
     views: {
       'tab-shows': {
         templateUrl: 'templates/media-ctrl.html',
@@ -117,4 +117,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/home');
 
-});
+}).config(function($sceDelegateProvider) {
+  $sceDelegateProvider.resourceUrlWhitelist([
+    // Allow same origin resource loads.
+    'self',
+    // Allow loading from our assets domain.  Notice the difference between * and **.
+    'https://walter.trakt.us/**'
+  ]);
+})
+.filter('trusted', ['$sce', function ($sce) {
+    return function(url) {
+        return $sce.trustAsResourceUrl(url);
+    };
+}]);

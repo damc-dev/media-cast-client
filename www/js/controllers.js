@@ -30,27 +30,10 @@ angular.module('starter.controllers', ['media.services', 'utils.storage'])
   ShowsResource.query({page: $scope.page}, function(showsPage) {
     $scope.shows = $scope.shows.concat(showsPage);
     $localstorage.setShows = $localstorage.setArray('cachedShows', $scope.shows);
-
   });
 })
-.controller('ShowDetailCtrl', function($scope, $stateParams, ShowDetails) {
+.controller('ShowDetailCtrl', function($scope, $stateParams, ShowDetails, $sce) {
   console.log($stateParams);
+
   $scope.show = ShowDetails.get({id: $stateParams.showId});
-})
-.controller('PlaybackCtrl', function($scope, $stateParams, ShowDetails, Playback) {
-  console.log($stateParams)
-  $scope.playback = {};
-    //$scope.details.title = $stateParams.title;
-  ShowDetails.get({id: $stateParams.showId}).$promise.then(function(show) {
-    $scope.show = show;
-    console.log(show);
-    $scope.episode = show.episodes[$stateParams.episodeIndex];
-    console.log($scope.episode);
-    $scope.playback.status = Playback.get({ url: $scope.episode.torrents[0].url})
-    .$promise.then(
-      function(status) { console.log(status); });
-    console.log($scope.playback);
-  });
-
-
 });
